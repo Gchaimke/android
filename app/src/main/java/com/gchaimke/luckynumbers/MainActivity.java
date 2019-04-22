@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private String htmlPageUrl = "https://www.pais.co.il/777/showMoreResults.aspx?fromIndex=1&amount=20";
     private TextView parsedHtmlNode;
     private ArrayList<String> mArrNumbers = new ArrayList<>();
-    private  String htmlContentInStringFormat="";
+    StringBuilder sb = new StringBuilder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
+
             try {
                 mArrNumbers.clear();
-                htmlContentInStringFormat="Getting Data from site...\n";
+                sb.append("Getting Data from site...\n");
                 htmlDocument = Jsoup.connect(htmlPageUrl).get();
                 Elements allNumbers = htmlDocument.select("ol[class=cat_data_info archive _777]");
                 int mElementsSize = allNumbers.size();
@@ -88,11 +89,11 @@ public class MainActivity extends AppCompatActivity {
                     mArrNumbers.add(allNumbers.eq(i).text());
                 }
                 for(int x=0;x<mArrNumbers.size();x++){
-                    htmlContentInStringFormat += x+" set: "+mArrNumbers.get(x)+"\n";
+                    sb.append(x).append(" set:").append(mArrNumbers.get(x)).append("\n");
+                    //htmlContentInStringFormat += x+" set: "+mArrNumbers.get(x)+"\n";
                 }
-
             } catch (IOException e) {
-                htmlContentInStringFormat="Error getting data :\n"+e.toString();
+                sb.append("Error getting data :\n"+e.toString());
                 e.printStackTrace();
             }
             return null;
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            parsedHtmlNode.setText(htmlContentInStringFormat);
+            parsedHtmlNode.setText(sb.toString());
         }
     }
 }
