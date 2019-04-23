@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Lucky Numbers</string>
     <string name="action_settings">Settings</string>
+    <string name="lottery_count">How many lottery to include?</string>
+    <string name="lottery_num">20</string>
+    <string name="lottery_instruction">Click on button to get numbres</string>
 </resources>
