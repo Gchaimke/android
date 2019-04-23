@@ -49,6 +49,12 @@
                 android:textColor="@color/design_default_color_primary_dark"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/btnGetData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/get_data_btn" />
+
         </LinearLayout>
     </ScrollView>
 
