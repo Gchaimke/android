@@ -1,15 +1,5 @@
 package com.gchaimke.luckynumbers;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.view.Menu;
-import android.view.MenuItem;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -31,12 +21,16 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
     private ArrayList<String> _mArrNumbers;
     private StringBuilder sb = new StringBuilder();
     private Document htmlDocument;
-    private String htmlPageUrl = "https://www.pais.co.il/777/showMoreResults.aspx?fromIndex=1&amount=20";
+    private String htmlPageUrl = "https://www.pais.co.il/777/showMoreResults.aspx?fromIndex=1&amount=23";
     static String settingsFile="app_settings";
 
     public JsoupAsyncTask(Context context){
         this._context = context;
         _mArrNumbers = new ArrayList<>();
+    }
+
+    public ArrayList<String> getListnumbers(){
+        return new ArrayList<>(_mArrNumbers);
     }
     @Override
     protected void onPreExecute() {
@@ -109,7 +103,7 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
     }
 
 
-    private int randomWithRange(int min,int max){
+    public int randomWithRange(int min,int max){
         int range=max-min+1;
         return (int)(Math.random()*range)+min;
     }

@@ -1,5 +1,6 @@
 package com.gchaimke.luckynumbers;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,12 @@ import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     static TextView parsedHtmlNode;
+    private StringBuilder strBuild = new StringBuilder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +34,17 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //parsedHtmlNode.clearComposingText();
-                String strStartOut = JsoupAsyncTask.getSettings(getBaseContext());
-                parsedHtmlNode.setText(getString(R.string.data_from_btn)+strStartOut);
+                Statistic st =new Statistic();
+                ArrayList<Integer> allNumsStats = st.countNumbers(getBaseContext());
+                strBuild.setLength(0);
+                String str ="";
+                for(int i=1;i<=70;i++){
+                    if(i%10==0){
+                        strBuild.append("\n");
+                    }
+                    strBuild.append(i).append("-").append(allNumsStats.get(i)).append(" ");
+                }
+                parsedHtmlNode.setText(strBuild);
             }
         });
 
@@ -44,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
                 jsoupAsyncTask.execute();
             }
         });
+    }
+
+    public Context getContext(){
+        return getBaseContext();
     }
 
     @Override
