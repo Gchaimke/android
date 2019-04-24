@@ -17,15 +17,13 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
-    private Context _context;
     private ArrayList<String> _mArrNumbers;
     private StringBuilder sb = new StringBuilder();
-    private Document htmlDocument;
-    private String htmlPageUrl = "https://www.pais.co.il/777/showMoreResults.aspx?fromIndex=1&amount=23";
-    static String settingsFile="app_settings";
+    Context _context;
 
-    public JsoupAsyncTask(Context context){
-        this._context = context;
+    JsoupAsyncTask(Context context){
+
+        _context = context;
         _mArrNumbers = new ArrayList<>();
     }
 
@@ -39,6 +37,8 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
+        Document htmlDocument;
+        String htmlPageUrl = "https://www.pais.co.il/777/showMoreResults.aspx?fromIndex=1&amount=23";
         try {
             _mArrNumbers.clear();
             //sb.append("Getting Data from site...\n");
@@ -62,14 +62,13 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         sb.setLength(0);
-        int rNum=randomWithRange(11,15);
         String numsFromSet=getSettings(_context);
         MainActivity.parsedHtmlNode.setText(sb.append("Get data from server\n").append(numsFromSet));
     }
 
-    static void writeToFile(String data,Context context) {
+    private void writeToFile(String data,Context context) {
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(settingsFile, Context.MODE_PRIVATE));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("app_settings", Context.MODE_PRIVATE));
             outputStreamWriter.write(data);
             outputStreamWriter.close();
         }
@@ -81,7 +80,7 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
     static String getSettings(Context context){
         String ret="from settings";
         try{
-            InputStream inputStream = context.openFileInput(settingsFile);
+            InputStream inputStream = context.openFileInput("app_settings");
             if(inputStream!=null){
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader =new BufferedReader(inputStreamReader);
