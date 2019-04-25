@@ -17,19 +17,8 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
-    private ArrayList<String> _mArrNumbers;
     private StringBuilder sb = new StringBuilder();
-    Context _context;
 
-    JsoupAsyncTask(Context context){
-
-        _context = context;
-        _mArrNumbers = new ArrayList<>();
-    }
-
-    public ArrayList<String> getListnumbers(){
-        return new ArrayList<>(_mArrNumbers);
-    }
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -38,7 +27,10 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         Document htmlDocument;
-        String htmlPageUrl = "https://www.pais.co.il/777/showMoreResults.aspx?fromIndex=1&amount=23";
+        ArrayList<String> _mArrNumbers = new ArrayList<>();
+        String str = MainActivity.lotteryCont.getText().toString();
+        int lCount =Integer.parseInt(str)-1 ;
+        String htmlPageUrl = "https://www.pais.co.il/777/showMoreResults.aspx?fromIndex=1&amount="+lCount ;
         try {
             _mArrNumbers.clear();
             //sb.append("Getting Data from site...\n");
@@ -51,7 +43,7 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
             for(int x=0;x<_mArrNumbers.size();x++){
                 sb.append(_mArrNumbers.get(x)).append("\n");
             }
-            writeToFile(sb.toString(),_context);//sb.toString()
+            writeToFile(sb.toString(),MainActivity.getmContext());//sb.toString()
         } catch (IOException e) {
             sb.append("Error getting data :\n").append(e.toString());
             e.printStackTrace();
@@ -62,8 +54,8 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         sb.setLength(0);
-        String numsFromSet=getSettings(_context);
-        MainActivity.parsedHtmlNode.setText(sb.append("Get data from server\n").append(numsFromSet));
+        String numsFromSet=getSettings(MainActivity.getmContext());
+        MainActivity.tvColumn1.setText(sb.append("Get data from server\n").append(numsFromSet));
     }
 
     private void writeToFile(String data,Context context) {
@@ -101,9 +93,4 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
         return ret;
     }
 
-
-    public int randomWithRange(int min,int max){
-        int range=max-min+1;
-        return (int)(Math.random()*range)+min;
-    }
 }
