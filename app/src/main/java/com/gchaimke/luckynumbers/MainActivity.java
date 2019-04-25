@@ -60,9 +60,15 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getStats();
                 TextView lastTime = findViewById(R.id.lastCheck);
-                lastTime.setText(getLastCheckTime());
+                String str =lastTime.getText().toString();
+                if(str.equals("")||str.equals("01-01-70 00:00")||str.equals("No internet")){
+                    lastTime.setText("No internet");
+                }else{
+                    getStats();
+                    lastTime.setText(getLastCheckTime());
+                }
+
             }
         });
 

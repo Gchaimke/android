@@ -33,7 +33,6 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
         String htmlPageUrl = "https://www.pais.co.il/777/showMoreResults.aspx?fromIndex=1&amount="+lCount ;
         try {
             _mArrNumbers.clear();
-            //sb.append("Getting Data from site...\n");
             htmlDocument = Jsoup.connect(htmlPageUrl).get();
             Elements allNumbers = htmlDocument.select("ol[class=cat_data_info archive _777]");
             int mElementsSize = allNumbers.size();
@@ -70,7 +69,7 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
     }
 
     static String getSettings(Context context){
-        String ret="from settings";
+        String ret="";
         try{
             InputStream inputStream = context.openFileInput("app_settings");
             if(inputStream!=null){
@@ -87,8 +86,10 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
             }
         }catch(FileNotFoundException e){
             Log.e("log Activity","File not found: "+ e.toString());
+            ret="File not found:"+e.toString();
         }catch (IOException e){
             Log.e("log Activity","Can not read file: "+ e.toString());
+            ret="Can not read file: "+e.toString();
         }
         return ret;
     }

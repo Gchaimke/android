@@ -1,6 +1,10 @@
 package com.gchaimke.luckynumbers;
 
 import android.content.Context;
+import android.util.Log;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,12 +30,18 @@ class Statistic {
     }
 
     private ArrayList<String> getServerArrayList(Context context,int num){
-        if(num==0){
+        ArrayList<String> serverList = new ArrayList<>();
+        try{
+            if(num==0){
+                String dataFromSettings = JsoupAsyncTask.getSettings(context);
+                serverList = new ArrayList<>(Arrays.asList(dataFromSettings.split("\\r?\\n")));
+            }
             String dataFromSettings = JsoupAsyncTask.getSettings(context);
-            return new ArrayList<>(Arrays.asList(dataFromSettings.split("\\r?\\n")));
+            serverList = new ArrayList<>(Arrays.asList(dataFromSettings.split("\\W+")));
+        }catch (Exception e){
+            Log.e("log Activity","File not found: "+ e.toString());
         }
-        String dataFromSettings = JsoupAsyncTask.getSettings(context);
-        return new ArrayList<>(Arrays.asList(dataFromSettings.split("\\W+")));
+        return serverList;
     }
 
     private ArrayList<Integer> countNumbers(Context context){
