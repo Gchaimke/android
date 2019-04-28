@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int LOW = 3;
-    private static final int HIGH = 8;
+
     static TextView tvColumn1;
     static EditText lotteryCont;
     private static Context mContext;
@@ -96,19 +95,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void getStats(){
         Statistic st =new Statistic();
-        ArrayList<Integer> highNumsStats = st.highNumbers(getBaseContext(),HIGH);
+        ArrayList<Integer> cNumbers = st.countNumbers(getBaseContext());
+        int hNum = st.getMax(cNumbers);
+        int lNum = st.getMin(cNumbers);
+        int highDW=hNum-hNum/4;
+        int lowUp=lNum+2;
+
         strBuild.setLength(0);
+        strBuild.append("\nNumbers with high rating from ").append(highDW).append(" to ").append(hNum).append("\n");
+        ArrayList<Integer> highNumsStats = st.highNumbers(getBaseContext(),highDW);
         printArrList(highNumsStats);
 
-        ArrayList<Integer> lowNumsStats = st.lowNumbers(getBaseContext(),LOW);
-        strBuild.append("\n-----------\n");
+        ArrayList<Integer> lowNumsStats = st.lowNumbers(getBaseContext(),lNum);
+        strBuild.append("\nNumbers with low rating from ").append(lNum).append(" to ").append(lowUp).append("\n");
         printArrList(lowNumsStats);
 
-        ArrayList<Integer> otherNumbers = st.otherNumbers(getBaseContext(),LOW,HIGH);
-        strBuild.append("\n-----------\n");
+        ArrayList<Integer> otherNumbers = st.otherNumbers(getBaseContext(),lowUp,highDW);
+        strBuild.append("\nOther numbers\n");
         printArrList(otherNumbers);
 
-        ArrayList<Integer> luckyNums = st.luckyNumbers(getBaseContext(),LOW,HIGH);
+        ArrayList<Integer> luckyNums = st.luckyNumbers(getBaseContext(),lowUp,highDW);
         strBuild.append("\n-----------\n");
         printArrList(luckyNums);
         tvColumn1.setText(strBuild);

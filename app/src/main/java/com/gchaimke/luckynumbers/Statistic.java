@@ -44,7 +44,7 @@ class Statistic {
         return serverList;
     }
 
-    private ArrayList<Integer> countNumbers(Context context){
+    public ArrayList<Integer> countNumbers(Context context){
         ArrayList<Integer> _70ArrList = genEmptyArray();
         ArrayList<String> list = getServerArrayList(context,1);
         int listSize = list.size();
@@ -54,13 +54,32 @@ class Statistic {
         return _70ArrList;
     }
 
+    public int getMax(ArrayList<Integer> aList){
+        int num=0;
+        for(int i=0;i<aList.size();i++){
+            if(num<aList.get(i)){
+                num=aList.get(i);
+            }
+        }
+        return num;
+    }
+
+    public int getMin(ArrayList<Integer> aList){
+        int num=aList.size();
+        for(int i=1;i<aList.size();i++){
+            if(num>aList.get(i)){
+                num=aList.get(i);
+            }
+        }
+        return num;
+    }
+
     ArrayList<Integer> highNumbers(Context context,int up){
         ArrayList<Integer> _70ArrList =  countNumbers(context);
-        countNumbers(context);
         ArrayList<Integer> highList = new ArrayList<>();
         int listSize = _70ArrList.size();
         for(int i =1;i<=listSize-1;i++){
-            if(_70ArrList.get(i)>=up)
+            if(_70ArrList.get(i)>up)
                 highList.add(i);
         }
         return highList;
@@ -71,7 +90,7 @@ class Statistic {
         ArrayList<Integer> lowList = new ArrayList<>();
         int listSize = _70ArrList.size();
         for(int i =1;i<=listSize-1;i++){
-            if(_70ArrList.get(i)<=low && _70ArrList.get(i)>0)
+            if(_70ArrList.get(i)>=low && _70ArrList.get(i)<=low+2)
                 lowList.add(i);
         }
         return lowList;
@@ -88,8 +107,18 @@ class Statistic {
         ArrayList<Integer> highNums = highNumbers(context,high);
         ArrayList<Integer> lowNums = lowNumbers(context,low);
         ArrayList<Integer> otherNums = otherNumbers(context,low,high);
-        getRandom(highNums,3);
-        getRandom(lowNums,4);
+        if(highNums.size()>3){
+            getRandom(highNums,3);
+        }else{
+            luckyNums.addAll(highNums);
+        }
+
+        if(lowNums.size()>4){
+            getRandom(lowNums,4);
+        }else{
+                luckyNums.addAll(lowNums);
+        }
+
         getRandom(otherNums,9-luckyNums.size());
         Collections.sort(luckyNums);
         return luckyNums;
